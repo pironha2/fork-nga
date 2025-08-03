@@ -53,7 +53,6 @@ dependencies {
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
     // ReVanced
@@ -125,6 +124,8 @@ android {
     }
 
     buildTypes {
+        configureEach {
+        }
         debug {
             applicationIdSuffix = ".debug"
             resValue("string", "app_name", "ReVanced Manager (Debug)")

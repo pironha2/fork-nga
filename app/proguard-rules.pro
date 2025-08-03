@@ -10,7 +10,12 @@
 # Required for serialization to work properly
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {
-    static <1>$Companion Companion;
+    static <1>$* Companion;
+}
+-keepnames @kotlinx.serialization.internal.NamedCompanion class *
+-if @kotlinx.serialization.internal.NamedCompanion class *
+-keepclassmembernames class * {
+    static <1> *;
 }
 -if @kotlinx.serialization.Serializable class ** {
     static **$* *;

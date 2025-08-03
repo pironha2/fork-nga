@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import kotlin.random.Random
 
 plugins {
@@ -199,8 +200,11 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget("17")
+            jvmToolchain(17)
+        }
     }
 
     buildFeatures {
@@ -221,10 +225,6 @@ android {
             version = "3.22.1"
         }
     }
-}
-
-kotlin {
-    jvmToolchain(17)
 }
 
 tasks {

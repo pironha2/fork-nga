@@ -194,8 +194,8 @@ fun DashboardScreen(
                             )
                         }
                         TooltipIconButton(
-                            onClick = vm::updateSources
-                            tooltip = stringResource(R.string.refresh),
+                            onClick = vm::updateSources,
+                            tooltip = stringResource(R.string.refresh)
                         ) {
                             Icon(
                                 Icons.Outlined.Refresh,

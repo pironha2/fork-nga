@@ -85,7 +85,6 @@ fun DownloadsSettingsScreen(
                 actions = {
                     if (viewModel.appSelection.isNotEmpty()) {
                         TooltipIconButton(
-                            modifier = Modifier,
                             tooltip = stringResource(R.string.delete),
                             onClick = { showDeleteConfirmationDialog = true }
                         ) {

@@ -165,7 +165,6 @@ fun PatcherScreen(
             BottomAppBar(
                 actions = {
                     TooltipIconButton(
-                        modifier = Modifier,
                         onClick = { exportApkLauncher.launch("${viewModel.packageName}_${viewModel.version}_revanced_patched.apk") },
                         enabled = patcherSucceeded == true,
                         tooltip = stringResource(R.string.save_apk),
@@ -173,7 +172,6 @@ fun PatcherScreen(
                         Icon(Icons.Outlined.Save, stringResource(id = R.string.save_apk))
                     }
                     TooltipIconButton(
-                        modifier = Modifier,
                         onClick = { viewModel.exportLogs(context) },
                         enabled = patcherSucceeded != null,
                         tooltip = stringResource(R.string.save_logs),

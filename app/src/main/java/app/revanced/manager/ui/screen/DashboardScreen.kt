@@ -185,7 +185,6 @@ fun DashboardScreen(
                     },
                     actions = {
                         TooltipIconButton(
-                            modifier = Modifier,
                             onClick = {
                                 showDeleteConfirmationDialog = true
                             },
@@ -197,7 +196,6 @@ fun DashboardScreen(
                             )
                         }
                         TooltipIconButton(
-                            modifier = Modifier,
                             onClick = {
                                 vm.selectedSources.forEach { vm.update(it) }
                                 vm.cancelSourceSelection()
@@ -217,7 +215,6 @@ fun DashboardScreen(
                     actions = {
                         if (!vm.updatedManagerVersion.isNullOrEmpty()) {
                             TooltipIconButton(
-                                modifier = Modifier,
                                 onClick = onUpdateClick,
                                 tooltip = stringResource(R.string.update),
                             ) {
@@ -231,7 +228,6 @@ fun DashboardScreen(
                             }
                         }
                         TooltipIconButton(
-                            modifier = Modifier,
                             onClick = onSettingsClick,
                             tooltip = stringResource(R.string.settings),
                         ) {
@@ -250,7 +246,6 @@ fun DashboardScreen(
         },
         floatingActionButton = {
             TooltipFloatingActionButton(
-                modifier = Modifier,
                 tooltip = stringResource(R.string.add),
                 onClick = {
                     vm.cancelSourceSelection()

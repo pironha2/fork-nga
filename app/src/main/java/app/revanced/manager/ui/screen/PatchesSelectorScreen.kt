@@ -287,7 +287,6 @@ fun PatchesSelectorScreen(
                     ) { searchExpanded ->
                         if (searchExpanded) {
                             TooltipIconButton(
-                                modifier = Modifier,
                                 onClick = { setQuery("") },
                                 enabled = query.isNotEmpty(),
                                 tooltip = stringResource(R.string.clear),
@@ -299,7 +298,6 @@ fun PatchesSelectorScreen(
                             }
                         } else {
                             TooltipIconButton(
-                                modifier = Modifier,
                                 onClick = { showBottomSheet = true },
                                 tooltip = stringResource(R.string.more),
                             ) {
@@ -365,7 +363,6 @@ fun PatchesSelectorScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     TooltipSmallFloatingActionButton(
-                        modifier = Modifier,
                         tooltip = stringResource(R.string.more),
                         onClick = { showBottomSheet = true },
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -376,7 +373,6 @@ fun PatchesSelectorScreen(
                         )
                     }
                     TooltipSmallFloatingActionButton(
-                        modifier = Modifier,
                         tooltip = stringResource(R.string.reset),
                         onClick = viewModel::reset,
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -565,7 +561,6 @@ fun ListHeader(
         trailingContent = onHelpClick?.let {
             {
                 TooltipIconButton(
-                    modifier = Modifier,
                     tooltip = stringResource(R.string.help),
                     onClick = it
                 ) {
@@ -648,7 +643,6 @@ private fun OptionsDialog(
                 onBackClick = onDismissRequest,
                 actions = {
                     TooltipIconButton(
-                        modifier = Modifier,
                         tooltip = stringResource(R.string.reset),
                         onClick = reset
                     ) {

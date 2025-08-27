@@ -37,7 +37,6 @@ fun BundleTopBar(
         navigationIcon = {
             if (onBackClick != null) {
                 TooltipIconButton(
-                    modifier = Modifier,
                     tooltip = stringResource(R.string.back),
                     onClick = onBackClick
                 ) {

@@ -70,7 +70,6 @@ fun AppTopBar(
         navigationIcon = {
             if (onBackClick != null) {
                 TooltipIconButton(
-                    modifier = Modifier,
                     onClick = onBackClick,
                     tooltip = stringResource(R.string.back),
                 ) {
@@ -113,7 +112,6 @@ fun AppTopBar(
         navigationIcon = {
             if (onBackClick != null) {
                 TooltipIconButton(
-                    modifier = Modifier,
                     onClick = onBackClick,
                     tooltip = stringResource(R.string.back),
                 ) {

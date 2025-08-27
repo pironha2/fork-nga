@@ -38,7 +38,6 @@ fun TooltipIconButton(
     content: @Composable (() -> Unit),
 ) {
     TooltipWrap(
-        modifier = modifier,
         tooltip = tooltip,
         positionProvider = positionProvider,
         haptic = haptic,
@@ -80,7 +79,6 @@ fun TooltipIconButton(
     content: @Composable (() -> Unit),
 ) {
     TooltipWrap(
-        modifier = modifier,
         tooltip = tooltip,
         positionProvider = positionProvider,
         haptic = haptic,

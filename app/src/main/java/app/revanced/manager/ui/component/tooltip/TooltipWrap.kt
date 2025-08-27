@@ -30,7 +30,7 @@ import androidx.compose.ui.window.PopupPositionProvider
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TooltipWrap(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     tooltip: String,
     positionProvider: PopupPositionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
     haptic: Boolean = true,
@@ -70,7 +70,7 @@ fun TooltipWrap(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TooltipWrap(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     @StringRes tooltip: Int,
     positionProvider: PopupPositionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
     haptic: Boolean = true,

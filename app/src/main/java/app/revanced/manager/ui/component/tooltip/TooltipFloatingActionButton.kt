@@ -43,7 +43,6 @@ fun TooltipFloatingActionButton(
     content: @Composable (() -> Unit)
 ) {
     TooltipWrap(
-        modifier = modifier,
         tooltip = tooltip,
         positionProvider = positionProvider,
         haptic = haptic,
@@ -89,7 +88,6 @@ fun TooltipFloatingActionButton(
     content: @Composable (() -> Unit)
 ) {
     TooltipWrap(
-        modifier = modifier,
         tooltip = tooltip,
         positionProvider = positionProvider,
         haptic = haptic,

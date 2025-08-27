@@ -49,7 +49,6 @@ fun SearchView(
                 placeholder = placeholder,
                 leadingIcon = {
                     TooltipIconButton(
-                        modifier = Modifier,
                         tooltip = stringResource(R.string.back),
                         onClick = { onActiveChange(false) }
                     ) {

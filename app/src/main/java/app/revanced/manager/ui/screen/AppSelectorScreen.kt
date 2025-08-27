@@ -163,7 +163,6 @@ fun AppSelectorScreen(
                 onBackClick = onBackClick,
                 actions = {
                     TooltipIconButton(
-                        modifier = Modifier,
                         tooltip = stringResource(R.string.search_patches),
                         onClick = { search = true }
                     ) {

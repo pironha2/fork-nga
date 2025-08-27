@@ -139,7 +139,6 @@ fun NotificationCard(
             }
             if (onDismiss != null) {
                 TooltipIconButton(
-                    modifier = modifier,
                     onClick = onDismiss,
                     tooltip = stringResource(R.string.close),
                 ) {

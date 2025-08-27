@@ -2,7 +2,8 @@
 <resources>
 
     <style name="Theme.ReVancedManager" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_adaptive</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">#1B1B1B</item>
         <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>

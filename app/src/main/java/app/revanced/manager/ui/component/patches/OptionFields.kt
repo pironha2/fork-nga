@@ -89,15 +89,28 @@ private class OptionEditorScope<T : Any>(
     val option: Option<T>,
     val openDialog: () -> Unit,
     val dismissDialog: () -> Unit,
+    val selectionWarningEnabled: Boolean,
+    val showSelectionWarning: () -> Unit,
     val value: T?,
-    val setValue: (T?) -> Unit,
+    val setValue: (T?) -> Unit
 ) {
     fun submitDialog(value: T?) {
         setValue(value)
         dismissDialog()
     }
 
-    fun clickAction() = editor.clickAction(this)
+    fun checkSafeguard(block: () -> Unit) {
+        if (!option.required && selectionWarningEnabled)
+            showSelectionWarning()
+        else
+            block()
+    }
+
+    fun clickAction() {
+        checkSafeguard {
+            editor.clickAction(this)
+        }
+    }
 
     @Composable
     fun ListItemTrailingContent() = editor.ListItemTrailingContent(this)
@@ -114,7 +127,7 @@ private interface OptionEditor<T : Any> {
         TooltipIconButton(
             modifier = Modifier,
             tooltip = stringResource(R.string.edit),
-            onClick = { clickAction(scope) }
+            onClick = { scope.checkSafeguard { clickAction(scope) } }
         ) {
             Icon(Icons.Outlined.Edit, stringResource(R.string.edit))
         }
@@ -143,11 +156,14 @@ private inline fun <T : Any> WithOptionEditor(
     option: Option<T>,
     value: T?,
     noinline setValue: (T?) -> Unit,
+    selectionWarningEnabled: Boolean,
     crossinline onDismissDialog: @DisallowComposableCalls () -> Unit = {},
     block: OptionEditorScope<T>.() -> Unit
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
-    val scope = remember(editor, option, value, setValue) {
+    var showSelectionWarningDialog by rememberSaveable { mutableStateOf(false) }
+
+    val scope = remember(editor, option, value, setValue, selectionWarningEnabled) {
         OptionEditorScope(
             editor,
             option,
@@ -156,10 +172,17 @@ private inline fun <T : Any> WithOptionEditor(
                 showDialog = false
                 onDismissDialog()
             },
+            selectionWarningEnabled,
+            showSelectionWarning = { showSelectionWarningDialog = true },
             value,
             setValue
         )
     }
+
+    if (showSelectionWarningDialog)
+        SelectionWarningDialog(
+            onDismiss = { showSelectionWarningDialog = false }
+        )
 
     if (showDialog) scope.Dialog()
 
@@ -171,6 +194,7 @@ fun <T : Any> OptionItem(
     option: Option<T>,
     value: T?,
     setValue: (T?) -> Unit,
+    selectionWarningEnabled: Boolean
 ) {
     val editor = remember(option.type, option.presets) {
         @Suppress("UNCHECKED_CAST")
@@ -183,7 +207,7 @@ fun <T : Any> OptionItem(
         else baseOptionEditor
     }
 
-    WithOptionEditor(editor, option, value, setValue) {
+    WithOptionEditor(editor, option, value, setValue, selectionWarningEnabled) {
         ListItem(
             modifier = Modifier.clickable(onClick = ::clickAction),
             headlineContent = { Text(option.title) },
@@ -256,7 +280,10 @@ private object StringOptionEditor : OptionEditor<String> {
                             tooltip = stringResource(R.string.string_option_menu_description),
                             onClick = { showDropdownMenu = true }
                         ) {
-                            Icon(Icons.Outlined.MoreVert, stringResource(R.string.string_option_menu_description))
+                            Icon(
+                                Icons.Outlined.MoreVert,
+                                stringResource(R.string.string_option_menu_description)
+                            )
                         }
 
                         DropdownMenu(
@@ -301,7 +328,7 @@ private object StringOptionEditor : OptionEditor<String> {
 
 private abstract class NumberOptionEditor<T : Number> : OptionEditor<T> {
     @Composable
-    protected abstract fun NumberDialog(
+    abstract fun NumberDialog(
         title: String,
         current: T?,
         validator: (T?) -> Boolean,
@@ -355,7 +382,14 @@ private object BooleanOptionEditor : OptionEditor<Boolean> {
 
     @Composable
     override fun ListItemTrailingContent(scope: OptionEditorScope<Boolean>) {
-        HapticSwitch(checked = scope.current, onCheckedChange = scope.setValue)
+        HapticSwitch(
+            checked = scope.current,
+            onCheckedChange = { value ->
+                scope.checkSafeguard {
+                    scope.setValue(value)
+                }
+            }
+        )
     }
 
     @Composable
@@ -394,6 +428,7 @@ private class PresetOptionEditor<T : Any>(private val innerEditor: OptionEditor<
             scope.option,
             scope.value,
             scope.setValue,
+            scope.selectionWarningEnabled,
             onDismissDialog = scope.dismissDialog
         ) inner@{
             var hidePresetsDialog by rememberSaveable {
@@ -626,7 +661,8 @@ private class ListOptionEditor<T : Serializable>(private val elementEditor: Opti
                                 elementEditor,
                                 elementOption,
                                 value = item.value,
-                                setValue = { items[index] = item.copy(value = it) }
+                                setValue = { items[index] = item.copy(value = it) },
+                                selectionWarningEnabled = scope.selectionWarningEnabled
                             ) {
                                 ListItem(
                                     modifier = Modifier.combinedClickable(

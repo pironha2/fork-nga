@@ -75,6 +75,7 @@ import app.revanced.manager.ui.component.patches.OptionItem
 import app.revanced.manager.ui.component.tooltip.TooltipFloatingActionButton
 import app.revanced.manager.ui.component.tooltip.TooltipIconButton
 import app.revanced.manager.ui.component.tooltip.TooltipSmallFloatingActionButton
+import app.revanced.manager.ui.component.patches.SelectionWarningDialog
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_INCOMPATIBLE
 import app.revanced.manager.ui.viewmodel.PatchesSelectorViewModel.Companion.SHOW_UNIVERSAL
@@ -183,7 +184,8 @@ fun PatchesSelectorScreen(
             patch = patch,
             values = viewModel.getOptions(bundle, patch),
             reset = { viewModel.resetOptions(bundle, patch) },
-            set = { key, value -> viewModel.setOption(bundle, patch, key, value) }
+            set = { key, value -> viewModel.setOption(bundle, patch, key, value) },
+            selectionWarningEnabled = viewModel.selectionWarningEnabled
         )
     }
 
@@ -217,9 +219,7 @@ fun PatchesSelectorScreen(
             ) { patch ->
                 PatchItem(
                     patch = patch,
-                    onOptionsDialog = {
-                        viewModel.optionsDialog = uid to patch
-                    },
+                    onOptionsDialog = { viewModel.optionsDialog = uid to patch },
                     selected = compatible && viewModel.isSelected(
                         uid,
                         patch
@@ -262,7 +262,6 @@ fun PatchesSelectorScreen(
                         label = "SearchBar back button"
                     )
                     TooltipIconButton(
-                        modifier = Modifier.rotate(rotation),
                         onClick = {
                             if (searchExpanded) {
                                 setSearchExpanded(false)
@@ -363,16 +362,6 @@ fun PatchesSelectorScreen(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     TooltipSmallFloatingActionButton(
-                        tooltip = stringResource(R.string.more),
-                        onClick = { showBottomSheet = true },
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.FilterList,
-                            contentDescription = stringResource(R.string.more)
-                        )
-                    }
-                    TooltipSmallFloatingActionButton(
                         tooltip = stringResource(R.string.reset),
                         onClick = viewModel::reset,
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -432,7 +421,7 @@ fun PatchesSelectorScreen(
                                         style = MaterialTheme.typography.bodyMedium
                                     )
                                     Text(
-                                        text = bundle.version!!,
+                                        text = bundle.version.orEmpty(),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -489,17 +478,6 @@ fun PatchesSelectorScreen(
             )
         }
     }
-}
-
-@Composable
-private fun SelectionWarningDialog(
-    onDismiss: () -> Unit
-) {
-    SafeguardDialog(
-        onDismiss = onDismiss,
-        title = R.string.warning,
-        body = stringResource(R.string.selection_warning_description),
-    )
 }
 
 @Composable
@@ -635,6 +613,7 @@ private fun OptionsDialog(
     reset: () -> Unit,
     set: (String, Any?) -> Unit,
     onDismissRequest: () -> Unit,
+    selectionWarningEnabled: Boolean
 ) = FullscreenDialog(onDismissRequest = onDismissRequest) {
     Scaffold(
         topBar = {
@@ -668,7 +647,8 @@ private fun OptionsDialog(
                     value = value,
                     setValue = {
                         set(key, it)
-                    }
+                    },
+                    selectionWarningEnabled = selectionWarningEnabled
                 )
             }
         }

@@ -227,12 +227,12 @@ fun ImportExportSettingsScreen(
                         GroupItem(
                             onClick = {
                                 selectorDialog = {
-                                    BundleSelector(bundles = patchBundles) { bundle ->
-                                        bundle?.also {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
                                             coroutineScope.launch {
                                                 vm.resetDialogState =
-                                                    ResetDialogState.PatchSelectionBundle(bundle.getName()) {
-                                                        vm.resetSelectionForPatchBundle(bundle)
+                                                    ResetDialogState.PatchSelectionBundle(it.name) {
+                                                        vm.resetSelectionForPatchBundle(it)
                                                     }
                                             }
                                         }
@@ -283,12 +283,12 @@ fun ImportExportSettingsScreen(
                         GroupItem(
                             onClick = {
                                 selectorDialog = {
-                                    BundleSelector(bundles = patchBundles) { bundle ->
-                                        bundle?.also {
+                                    BundleSelector(sources = patchBundles) { src ->
+                                        src?.also {
                                             coroutineScope.launch {
                                                 vm.resetDialogState =
-                                                    ResetDialogState.PatchOptionBundle(bundle.getName()) {
-                                                        vm.resetOptionsForBundle(bundle)
+                                                    ResetDialogState.PatchOptionBundle(src.name) {
+                                                        vm.resetOptionsForBundle(src)
                                                     }
                                             }
                                         }
@@ -296,8 +296,8 @@ fun ImportExportSettingsScreen(
                                     }
                                 }
                             },
-                            headline = R.string.patch_options_reset,
-                            description = R.string.patch_options_reset_all,
+                            headline = R.string.patch_options_reset_patches,
+                            description = R.string.patch_options_reset_patches_description,
                         )
                     }
                 }

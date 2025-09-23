@@ -59,7 +59,7 @@ tasks.matching { it.name.startsWith("publish") }.configureEach {
 
 android {
     namespace = "app.revanced.manager.plugin.downloader"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26

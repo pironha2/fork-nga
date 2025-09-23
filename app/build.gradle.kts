@@ -111,13 +111,13 @@ dependencies {
 
 android {
     namespace = "app.revanced.manager"
-    compileSdk = 35
-    buildToolsVersion = "35.0.1"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "app.revanced.manager"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.0.1"
         vectorDrawables.useSupportLibrary = true

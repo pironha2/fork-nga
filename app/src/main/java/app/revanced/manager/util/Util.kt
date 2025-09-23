@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.MonthNames
@@ -53,6 +52,7 @@ import java.util.Locale
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlin.time.ExperimentalTime
 
 typealias PatchSelection = Map<Int, Set<String>>
 typealias Options = Map<Int, Map<String, Map<String, Any?>>>
@@ -141,9 +141,10 @@ suspend fun <T> Flow<Iterable<T>>.collectEach(block: suspend (T) -> Unit) {
     }
 }
 
+@OptIn(ExperimentalTime::class)
 fun LocalDateTime.relativeTime(context: Context): String {
     try {
-        val now = Clock.System.now()
+        val now = kotlin.time.Clock.System.now()
         val duration = now - this.toInstant(TimeZone.UTC)
 
         return when {

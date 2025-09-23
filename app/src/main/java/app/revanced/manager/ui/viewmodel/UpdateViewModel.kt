@@ -87,7 +87,7 @@ class UpdateViewModel(
                         url(release.downloadUrl)
                         onDownload { bytesSentTotal, contentLength ->
                             downloadedSize = bytesSentTotal
-                            totalSize = contentLength
+                            totalSize = contentLength ?: 0
                         }
                     }
                     installUpdate()
